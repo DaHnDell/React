@@ -2,21 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import AirBnBList from './chapter_05_2/AirBnBList';
-import NotificationList from './chapter_06/NotificationList';
+import MyFruit from './chapter_07/MyFruit';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-
-setInterval(()=> {
-  
   root.render(
     <React.StrictMode>
-      {/* <AirBnBList/>
-       */}
-       <NotificationList />
+      <MyFruit />
     </React.StrictMode>
   );
-
-});
-
 reportWebVitals();
