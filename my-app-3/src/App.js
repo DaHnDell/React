@@ -4,6 +4,7 @@ import Index from './component/Index';
 import Post from './component/Post';
 import PostDetails from './component/PostDetails';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (

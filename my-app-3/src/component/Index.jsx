@@ -1,9 +1,12 @@
 import React from 'react';
+import { Container } from 'react-bootstrap';
 
 const Index = () => {
   return (
     <div>
-      <h1>INDEX</h1>
+      <Container>
+        <h1>INDEX</h1>
+      </Container>
     </div>
   );
 }
