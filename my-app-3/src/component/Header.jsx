@@ -7,7 +7,7 @@ const Header = () => {
     <>
       {/* Router의 Link 컴포넌트는 직접접 페이지 이동을 담당한다 */}
       {/* path relative : ../ ./ / 상대 경로 지정 가능 */}
-      <Navbar expand="lg">
+      <Navbar expand="lg" className='mb-4' sticky='top'>
         <Container>
           <Navbar.Brand as={Link}>React Simple Post</Navbar.Brand>
           <Nav variant="pills" defaultActiveKey="link-0" className='me-auto'>
