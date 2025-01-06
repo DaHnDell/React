@@ -1,0 +1,57 @@
+// mdn에서 import / export 구문 공부해 볼 것
+// Day.js | Moment.js 
+// 배껴 칠땐 화면 보고 칠 것(내가 친 결과 보기)
+// 애로우펑션에서 (_) 를 사용할 경우에 파라미터의 종류가 관계가 없다는 뜻. 즉 와일드카드와 비슷.
+// 프론트 작업 = 제이슨 딜리버리
+// get(조회) post(등록) put(수정) delete(삭제)
+
+
+하나의 컴포넌트에는 반드시 하나의 루트 태그가 존재해야 한다. 둘 이상의 것도 들어가면 안됨.
+
+rcc = Class component
+rfc = Function component
+
+props => 부모 컴포넌트가 전달할 값. 함수의 파라미터 정도라고 생각하면 된다.
+Component => 요소들의 집합.
+state => 컴포넌트의 상태를 표현하는 변수.
+
+jsx 란 = > 자바스크립트와 XML HTML 함께 사용할 수 있는 자바스크립트의 확장 문법 + injection attack 방어 + 중괄호를 사용하여 자바스크립트 코드를 삽입 + 자바스크립트에 XML과 HTML을 섞어서 사용
+
+부모를 호출해도 자식의 값이 변경된다 => 주소를 참조한다는것.
+컴포넌트는 함수 그 자체. 
+
+리액트 엘리먼트는 DOM 엘리먼트의 가상 표현. 리액트 앱의 가장 작은 빌딩의 블록들. 화면에 나타나는 내용을 기술하는 자바스크립트 객체.
+
+props 는 키 밸류 형태며 name 값으로 전달된다.
+
+export를 할 때, default 함수는 언제나 하나야여만 함.
+
+js에서는 클래스를 사용하게 될 경우 이름과 조건식(typeOf) 등을 활용해서 통일된 규칙의 객체를 만들기 위해서 사용.
+클래스가 가질 수 있는 필드는 constructor 라는 함수를 활용해서 만든다. getter 계열을 만드려면 get 키워드를 활용한다.
+
+jsx에서는 , 클래스 기반의 문법에서 render() 라는 대표 메서드는 결국 클래스 내부의 메서드라고 할 수 있다.
+
+useEffect => (이펙트 대상 함수, 의존성 배열) // 
+
+promise (비동기에서의 순차적 처리를 위한 콜백 지옥을 벗어나기 위해 promise를 통해 해결 가능)
+promise 란 비동기 함수가 반환하는 객체. 
+
+ajax에서는 jqueryXmlRequest 형태의 객체를 사용했었음.
+
+promise에서의 3가지 상태
+-대기(Pending): 비동기 함수가 아직 시작하지 않은 상태-
+-성공(Fulfilled): 비동기 함수가 성공적으로 완료된 상태-
+-실패(Rejected): 비동기 함수가 실패한 상태-
+
+Promise를 처리할 때는 then() 또는 catch() 메서드를 사용
+Promise가 반환되면 then() 메서드가 호출
+Promise가 반환되면 then() 메서드를 건너뛰고 catch() 메서드가 바로 호출
+
+fetch 함수는 window 객체 내부에 포함되어 있다.
+fetch 함수로는 에러 자체를 다루기는 매우 어렵다. 에러핸들링에 최적화되어 있지 않다는 것.
+
+1. CORS 처리 (origin issue) / security = @CrossOrigin 어노테이션 사용 가능
+2. Re render 조건 : state, props의 변화가 감지되었을 때.
+3. useEffect 를 사용해서, 변화가 되었을 때의 상황 한 번만 리렌더하게 함.
+4. js promise, async await | await = 비동기 코드를 순차적으로 작동할 수 있도록 도와줌 + async 함수 내부에서 있어야 함.
+5. fetch, axios 
