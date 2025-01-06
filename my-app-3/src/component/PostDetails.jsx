@@ -66,7 +66,7 @@ const PostDetails = () => {
     <>
       <Container>
         <h1>PostDetail</h1>
-        <Card style={{ width: '18rem' }}>
+        <Card>
           <Card.Body>
             <Card.Title>{postDetail.title}</Card.Title>
             <Card.Subtitle className="mb-2 text-muted">{postDetail.userId}</Card.Subtitle>
@@ -75,7 +75,9 @@ const PostDetails = () => {
              {postDetail.body}
             </Card.Text>
           </Card.Body>
-          <Button as={Link} to="/">TO LIST</Button>
+          <div className='text-end'>
+            <Button as={Link} to="/" variant='primary'>TO LIST</Button>
+          </div>
         </Card>
       </Container>
     </>
