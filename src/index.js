@@ -7,6 +7,8 @@ import AttendanceBook from './chapter_10/AttendanceBook';
 import MyForm from './chapter_11/MyForm';
 import Multiple from './chapter_11/Multiple';
 import Calculator from './chapter_12/Calculator';
+import ProfileCard from './chapter_13/ProfileCard';
+import Accomodate from './chapter_07/Accomodate';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
   root.render(
@@ -17,7 +19,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
       {/* <AttendanceBook/> */}
       {/* <MyForm/> */}
       {/* <Multiple/> */}
-      <Calculator/>
+      {/* <Calculator/> */}
+      {/* <ProfileCard/> */}
+      <Accomodate/>
     </React.StrictMode>
   );
 reportWebVitals();
