@@ -1,18 +1,16 @@
-import axios from 'axios';
 import React, { useState } from 'react';
-import { data, Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import useAxios from '../../hooks/useAxios';
 
 const Write = () => {
   // const [title, setTitle] = useState('');
   // const [content, setContent] = useState('');
   // const [memberEmail, setEmail] = useState('');
+  // const {data, loading, error, req} = useAxios();
 
-  const [board, setBoard] = useState({title:'', content:'', memberEmail:''});
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
+  const [board, setBoard] = useState({title:'', content:'', memberEmail:'null100@com'});
   const navigate = useNavigate();
+  const {req} = useAxios();
 
   const handleChange = (e) => {
     // const etn = e.target.name
@@ -38,26 +36,26 @@ const Write = () => {
     // const returnObj = {title:title, content:content, memberEmail:memberEmail};
     e.preventDefault();
     console.log(board);
-
-    (async () => {
-      setLoading(true);
-      try{
-        const resp = await axios({
-          method:'post',
-          url:'http://localhost:8080/api/v1/board',
-          data:board,
-          headers: {
-            'Content-Type' : 'application/json'
-          }
-        });
-        setData(resp.data);
-      }catch(err){
-        console.log(err);
-        setError(err);
-      }finally{
-        setLoading(false);
-      }
-    })();
+    req('post', 'board', board);
+    // (async () => {
+    //   setLoading(true);
+    //   try{
+    //     const resp = await axios({
+    //       method:'post',
+    //       url:'http://localhost:8080/api/v1/board',
+    //       data:board,
+    //       headers: {
+    //         'Content-Type' : 'application/json'
+    //       }
+    //     });
+    //     setData(resp.data);
+    //   }catch(err){
+    //     console.log(err);
+    //     setError(err);
+    //   }finally{
+    //     setLoading(false);
+    //   }
+    // })();
     alert("posted Successfully!");
     console.log("=============================");
     console.log("posted");
