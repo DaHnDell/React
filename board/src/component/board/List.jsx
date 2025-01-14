@@ -12,7 +12,7 @@ const List = () => {
   const navigate = useNavigate();
   //effect>>api 호출
   useEffect(() => {
-    req('get', 'board/list');
+    req('get', 'notes/listall');
   },[req]);
   if(error){
     return <div><h1>Error Occured!</h1></div>;
@@ -26,7 +26,7 @@ const List = () => {
     <div>
       <button onClick={()=>navigate('/write')}>Write Post</button>
       <ul>
-        {data.dtoList.map(b => <li key={b.bno}>{b.title}</li>)}
+        {data && data.map(b=> <li key={b.num}>{b.title}</li>)}
       </ul>
     </div>
   );

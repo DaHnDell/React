@@ -2,15 +2,32 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import List from "./component/board/List";
 import Write from "./component/board/Write";
 import React from "react";
-// import "../../css/not_found.scss"
+import LoginForm from "./component/member/LoginForm";
+import DashBoard from "./component/common/DashBoard";
+import ProtectedRoute from "./component/common/ProtectedRoute";
+import { AuthProvider } from "./hooks/AuthContext";
 
+// import "../../css/not_found.scss"
+// 로그인 성공 시 스토리지에 토큰, 이메일 저장 1) 페이지 이동 -> dashboard / 2) dashboard 내부에서 스토리지 내의 값을 확인(state) / 3) 로그아웃 구현
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<List />}/>
-        <Route path="/write" element={<Write />}/>
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<LoginForm/>}/>
+          <Route path="/dashboard" element={<DashBoard/>}/>
+          <Route path="/list" element={
+            <ProtectedRoute>
+              <List />
+            </ProtectedRoute>
+            }/>
+          <Route path="/write" element={
+            <ProtectedRoute>
+              <Write />
+            </ProtectedRoute>
+            }/>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
