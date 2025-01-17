@@ -1,70 +1,57 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import useAxios from '../../hooks/useAxios';
+import { useAuth } from '../../hooks/AuthContext';
 
 const Write = () => {
-  // const [title, setTitle] = useState('');
-  // const [content, setContent] = useState('');
-  // const [memberEmail, setEmail] = useState('');
-  // const {data, loading, error, req} = useAxios();
-
-  const [board, setBoard] = useState({title:'', content:'', memberEmail:'null100@com'});
   const navigate = useNavigate();
+  const {email} = useAuth();
+  const [board, setBoard] = useState({title:'', content:'', writerEmail:email, attachDtos:[]});
+  const [uploaded, setUploaded] = useState([]);
   const {req} = useAxios();
 
+  useEffect(() => {
+    setBoard(prev => ({...prev, writerEmail:email}));
+  }, [email]);
+
+  const handleFileUpload = async e => {
+    const files = e.target.files;
+    if (!files) return;
+    
+    const formData = new FormData();
+    for(let i = 0; i < files.length; i++){
+      formData.append("file", files[i]); // 유사배열 -> 배열로 바꿔줘야 함. // 앞에 이름이 requestbody
+    }
+
+    try {
+      const result = await req('post', 'file/upload', formData, {'Content-Type' : 'multipart/form-data'})
+      console.log(result);
+      setUploaded([...uploaded, ...result]);
+    } catch (error) {
+      console.error("Error during upload:", error);
+    }
+    e.target.value = '';
+  };
+
+
   const handleChange = (e) => {
-    // const etn = e.target.name
-    // switch(etn){
-    //   case 'title' :
-    //     setTitle(e.target.value);
-    //     console.log(title);
-    //     break;
-    //   case 'content' :
-    //     setContent(e.target.value);
-    //     console.log(content);
-    //     break;
-    //   case 'memberEmail' :
-    //     setEmail(e.target.value);
-    //     console.log(memberEmail);
-    //     break;
-    // }
     const {name, value} = e.target;
     setBoard({...board, [name] : value});
   }
 
   const handleSubmit = (e) => {
-    // const returnObj = {title:title, content:content, memberEmail:memberEmail};
     e.preventDefault();
     console.log(board);
-    req('post', 'board', board);
-    // (async () => {
-    //   setLoading(true);
-    //   try{
-    //     const resp = await axios({
-    //       method:'post',
-    //       url:'http://localhost:8080/api/v1/board',
-    //       data:board,
-    //       headers: {
-    //         'Content-Type' : 'application/json'
-    //       }
-    //     });
-    //     setData(resp.data);
-    //   }catch(err){
-    //     console.log(err);
-    //     setError(err);
-    //   }finally{
-    //     setLoading(false);
-    //   }
-    // })();
+    req('post', 'notes', {...board, attachDtos : uploaded});
     alert("posted Successfully!");
-    console.log("=============================");
-    console.log("posted");
-    console.log("=============================");
-    navigate("/");
+    navigate("/notes");
   }
 
+        
+  // const inputFile = <input type='file' onChange={handleFileUpload} name='file' multiple />;
+
   return (
-    <>
+    <div>
       <h1>write</h1>
       <form onSubmit={handleSubmit}>
         <p>input title</p>
@@ -72,10 +59,18 @@ const Write = () => {
         <p>input content</p>
         <input type="text" value={board.content} name='content' onChange={handleChange}/>
         <p>input memberEmail</p>
-        <input type="text" value={board.memberEmail} name='memberEmail' onChange={handleChange}/>
-        <button onClick={handleSubmit}> post </button>
+        <input type="text" value={board.writerEmail} name='writerEmail' onChange={handleChange}/>
+        <br/>
+        {/* {inputFile} */}
+        <input type='file' onChange={handleFileUpload} name='file' multiple />;
+        <button onClick={handleSubmit} > post </button>
       </form>
-    </>
+      <ul>
+        {uploaded.map
+        (u => <li key={u.uuid}><Link to={u.url}>{u.origin}</Link> <button data-uuid={u.uuid} onClick={(e=> setUploaded(uploaded.filter(file => file.uuid !== e.currentTarget.dataset.uuid)))}> delete</button></li>)
+        }
+      </ul>
+    </div>
   );
 }
 

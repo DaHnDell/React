@@ -31,7 +31,7 @@ const DashBoard = () => {
       {/* <button onClick={() => navigate("/list")} {...token === null ? 'disabled' : ''}>List</button> */}
       {/* <Link to="/list" {...token === null ? 'disabled' : ''}>List</Link>
       <button onClick={handleLogOut}>{token ? 'Logout' : 'Login'}</button> */}
-      {email ? <> <button onClick={logout}>Log-Out</button><Link to={"/list"}>List</Link></> : <Link to={"/"}>Log-in</Link>}
+      {email ? <> <button onClick={logout}>Log-Out</button><Link to={"/notes"}>List</Link></> : <Link to={"/"}>Log-in</Link>}
     </div>
   );
 }
