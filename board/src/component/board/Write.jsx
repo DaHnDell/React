@@ -62,7 +62,7 @@ const Write = () => {
         <input type="text" value={board.writerEmail} name='writerEmail' onChange={handleChange}/>
         <br/>
         {/* {inputFile} */}
-        <input type='file' onChange={handleFileUpload} name='file' multiple />;
+        <input type='file' onChange={handleFileUpload} name='file' multiple />
         <button onClick={handleSubmit} > post </button>
       </form>
       <ul>

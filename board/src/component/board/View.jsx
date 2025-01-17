@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import useAxios from '../../hooks/useAxios';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../hooks/AuthContext';
+// import axios from 'axios';
 
 const View = () =>  {
   const {loading, error, req} = useAxios();
@@ -37,6 +38,13 @@ const View = () =>  {
     req('delete', `notes/${num}`);
     navigate("/notes");
   }
+  const handleLikesToglle = async e=> {
+    e.preventDefault();
+    const ret = await req('post', `likes`, {email, num});
+    setMyLike(!myLike);
+    setNote({...note, likesCnt:note.likesCnt + (ret.result ? -1: 1)});
+  }
+
 
   return note && (
       <div>
@@ -47,7 +55,7 @@ const View = () =>  {
         <p>writer : {note.writerEmail} </p>
         <p>regDate : {note.regDate} </p>
         <p>modDate : {note.modDate}</p>
-        <button>Like <span>{myLike ? '♥' : '♡'}</span>{note.likesCnt}</button>
+        <button onClick={handleLikesToglle}>Like <span>{myLike ? '♥' : '♡'}</span>{note.likesCnt}</button>
         <div>
           <h3>attaches : {note.attachDtos && note.attachDtos.length}</h3>
           <ul>
