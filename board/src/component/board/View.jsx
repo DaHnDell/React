@@ -1,19 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import useAxios from '../../hooks/useAxios';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useAuth } from '../../hooks/AuthContext';
 
 const View = () =>  {
-  const {data, loading, error, req} = useAxios();
+  const {loading, error, req} = useAxios();
   const param = useParams();
   const num = param.num;
   const navigate = useNavigate();
+  const {email} = useAuth();
+  const [note, setNote] = useState({});
+  const [myLike, setMyLike] = useState({});
 
   useEffect(()=>{
-  (async() => {
-    const resp = await req('get', `notes/${num}`);
-    console.log(resp);
+    (async() => {
+      setNote(await req('get', `notes/${num}`));
+      const queryString = new URLSearchParams({email, num}).toString();
+      setMyLike(await req('get', `likes?${queryString}`));
     })();
-  },[req, num]); // 이펙트 관련 처리. param 자체에 의존할 경우 문제 발생.
+  },[num, req, email]); // 이펙트 관련 처리. param 자체에 의존할 경우 문제 발생.
+
   if(error){
     return <div><h1>Error Occured!</h1></div>;
   }
@@ -32,28 +38,27 @@ const View = () =>  {
     navigate("/notes");
   }
 
-  return (
-    data && (
+  return note && (
       <div>
         <h1>VIEW</h1>
         <p>num : {param.num}</p>
-        <p>title : {data.title} </p>
-        <p>content : {data.content} </p>
-        <p>writer : {data.writerEmail} </p>
-        <p>regDate : {data.regDate} </p>
-        <p>modDate : {data.modDate}</p>
+        <p>title : {note.title} </p>
+        <p>content : {note.content} </p>
+        <p>writer : {note.writerEmail} </p>
+        <p>regDate : {note.regDate} </p>
+        <p>modDate : {note.modDate}</p>
+        <button>Like <span>{myLike ? '♥' : '♡'}</span>{note.likesCnt}</button>
         <div>
-          <h3>attaches : {data.attachDtos.length}</h3>
+          <h3>attaches : {note.attachDtos && note.attachDtos.length}</h3>
           <ul>
-            {data.attachDtos.map(a=> <li key={a.uuid}><Link to={a.url}>{a.origin}</Link></li>)}
+            {note.attachDtos && note.attachDtos.map(a=> <li key={a.uuid}><Link to={a.url}>{a.origin}</Link></li>)}
           </ul>
         </div>
-        <Link to={`/notes/modify/${data.num}`}><button>modify note</button></Link>
+        <Link to={`/notes/modify/${note.num}`}><button>modify note</button></Link>
         <br/>
         <button onClick={handleDelete}> delete note </button>
       </div>
-    )
-  )
+  );
 }
 
 export default View;

@@ -34,7 +34,7 @@ const useAxios = (baseUrl = BASE_URL) => {
         setLoading(false);
       }
     }
-  , [baseUrl, token]);
+  , [baseUrl, tmpToken]);
 
   return {data, loading, error, req};
 
