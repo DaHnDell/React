@@ -1,34 +1,45 @@
 import React, { useEffect, useState } from 'react';
-
-const [sender, setSender] = useState("");
-const [messages, setMessages] = useState([]);
-const [input, setInput] = useState("");
-const ws = new WebSocket("ws://localhost:8080/chat")
-
-useEffect(() => {
-  ws.onmessage = e => {
-    const message = JSON.parse(e.data);
-    setMessages(prev => [...prev, message])
-  }
-  return () => ws.close()
-}, []);
-
-const sendMessage = () => {
-  if(input.trim()){
-    const message = {sender, content : input, timestamp : new Date().getTime()}
-    ws.send(JSON.stringify(message));
-    setInput("");
-  }
-}
-
-const handleSender = e => {
-  setSender(e.target.value)
-}
+import { getWebSocket } from './websocket';
 
 const ChatApp = () => {
+  const [sender, setSender] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+  // const ws = new WebSocket("ws://localhost:8080/chat")
+
+  useEffect(() => {
+    const ws = getWebSocket();
+    ws.onmessage = e => {
+      const message = JSON.parse(e.data);
+      console.log("useEffect ::: " + message);
+      setMessages(prev => [...prev, message]);
+      return () => ws.close();
+    }
+  }, []);
+  
+  const sendMessage = () => {
+    const ws = getWebSocket();
+    if(ws.readyState === WebSocket.OPEN && input.trim()){
+      const message = {sender, content : input, timestamp : new Date().getTime()}
+      console.log("sendMessage ::::: "+message);
+      ws.send(JSON.stringify(message));
+      setInput("");
+    }
+  }
+  
+  const handleSender = e => {
+    setSender(e.target.value);
+  }
+
   return (
     <div>
-      
+      <h3>Chat APP</h3>
+      <div style={{height:300, overflowY:"scroll", border:"1px solid black"}}>
+        {messages.map((msg, index) => <div key={index}><strong>{msg.sender}</strong> : {msg.content} </div>)}
+      </div>
+      <input type='text' value={sender} onChange={handleSender}/>
+      <input type='text' value={input}onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && sendMessage()} />
+      <button onClick={sendMessage}>send</button>
     </div>
   );
 }
